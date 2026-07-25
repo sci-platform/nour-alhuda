@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم المعلمة - أجيال / نور الهدى</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة SheetJS لتصدير Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        body {
+            background-color: #f0f7f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .navbar-custom {
+            background: linear-gradient(135deg, #1e7e34, #155d27);
+            border-bottom: 3px solid #ffc107;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+        .control-panel {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
+        }
+        .table-container {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e0e0e0;
+        }
+        .btn-whatsapp {
+            background-color: #25d366;
+            color: white;
+            border-radius: 20px;
+            font-size: 13px;
+            padding: 6px 15px;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .btn-whatsapp:hover {
+            background-color: #1ebc57;
+            color: white;
+        }
+        .badge-quran {
+            background-color: #e2f3e8;
+            color: #1e7e34;
+            border: 1px solid #1e7e34;
+            font-weight: bold;
+        }
+        .badge-time {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .text-ltr {
+            direction: ltr;
+            display: inline-block;
+        }
+        .notes-box {
+            max-width: 180px;
+            font-size: 0.85rem;
+            color: #555;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القائمة العلوية -->
+    <nav class="navbar navbar-dark navbar-custom mb-4">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1"><i class="fas fa-chalkboard-teacher me-2"></i> لوحة تحكم المعلمة - أجيال / نور الهدى</span>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        
+        <!-- شريط الإعدادات والتحكم -->
+        <div class="row mb-4">
+            <div class="col-md-8 mb-3">
+                <div class="control-panel h-100">
+                    <h5 class="text-success fw-bold mb-3"><i class="fas fa-cogs me-2"></i>إعدادات المنظومة ومنع التعارض</h5>
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <!-- مفتاح تفعيل/تعطيل منع التعارض -->
+                        <div class="form-check form-switch fs-5">
+                            <input class="form-check-input" type="checkbox" id="preventConflictSwitch">
+                            <label class="form-check-label text-dark small" for="preventConflictSwitch">تفعيل منع تعارض المواعيد</label>
+                        </div>
+                        <!-- الحد الأقصى للطلاب في الساعة -->
+                        <div class="d-flex align-items-center gap-2 border p-2 rounded-pill bg-light">
+                            <label class="text-muted small mb-0" for="maxBookingsPerHour">أقصى طلاب/ساعة:</label>
+                            <input type="number" class="form-control form-control-sm text-center fw-bold" id="maxBookingsPerHour" value="1" min="1" max="5" style="width: 50px; border-radius: 15px;">
+                        </div>
+                        <!-- زر فتح / إغلاق التسجيل -->
+                        <button id="toggleRegistrationBtn" class="btn btn-sm btn-success rounded-pill px-3 ms-auto">
+                            <i class="fas fa-unlock me-1"></i> التسجيل مفتوح
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- زر تصدير Excel وملخص النظام -->
+            <div class="col-md-4 mb-3">
+                <div class="control-panel h-100 d-flex flex-column justify-content-between text-center">
+                    <div>
+                        <span class="badge bg-danger mb-2">النظام الحالي: 8 محاضرات شهرياً (موعدين أسبوعياً)</span>
+                        <p class="small text-muted mb-2">150 ج.م / شهرياً - حلقات فردية للنساء والأطفال</p>
+                    </div>
+                    <button id="exportExcelBtn" class="btn btn-outline-success rounded-pill w-100 fw-bold">
+                        <i class="fas fa-file-excel me-2"></i> تصدير البيانات إلى Excel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- جدول الحجوزات الواردة -->
+        <div class="table-container bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                <h4 class="mb-0 text-success fw-bold"><i class="fas fa-users me-2"></i>طلبات الحجز الواردة</h4>
+                <span class="badge bg-secondary" id="totalBookingsBadge">إجمالي الطلبات: 0</span>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-hover align-middle" id="bookingsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>اسم الطالب</th>
+                            <th>العمر</th>
+                            <th>القدر المحفوظ</th>
+                            <th>رقم الواتساب</th>
+                            <th class="text-center">الموعد الأول</th>
+                            <th class="text-center">الموعد الثاني</th>
+                            <th>الملاحظات</th>
+                            <th>تاريخ الطلب</th>
+                            <th class="text-center">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTableBody">
+                        <tr>
+                            <td colspan="10" class="text-center py-5"><i class="fas fa-spinner fa-spin fa-2x text-success"></i><br>جاري تحميل البيانات...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+        import { getDatabase, ref, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AiZaSyC76HLnXGr6AFEcJzNNfYVUrjexNf3irm0",
+            authDomain: "nour-alhuda-85c58.firebaseapp.com",
+            databaseURL: "https://nour-alhuda-85c58-default-rtdb.firebaseio.com",
+            projectId: "nour-alhuda-85c58",
+            storageBucket: "nour-alhuda-85c58.firebasestorage.app",
+            messagingSenderId: "1048432962714",
+            appId: "1:1048432962714:web:19a87b5d9c0e9744a24323",
+            measurementId: "G-JSMBLPMN66"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const bookingsRef = ref(db, 'bookings');
+        const configRef = ref(db, 'config');
+        
+        const tableBody = document.getElementById('bookingsTableBody');
+        const preventSwitch = document.getElementById('preventConflictSwitch');
+        const maxInput = document.getElementById('maxBookingsPerHour');
+        const toggleRegBtn = document.getElementById('toggleRegistrationBtn');
+        const totalBadge = document.getElementById('totalBookingsBadge');
+        
+        let currentBookingsData = [];
+        let isRegistrationOpen = true;
+
+        // 1. جلب وعرض طلبات الحجز من قاعدة البيانات
+        onValue(bookingsRef, (snapshot) => {
+            tableBody.innerHTML = '';
+            const data = snapshot.val();
+
+            if (!data) {
+                tableBody.innerHTML = '<tr><td colspan="10" class="text-center py-5 text-muted">لا توجد طلبات حجز مسجلة حتى الآن.</td></tr>';
+                totalBadge.textContent = 'إجمالي الطلبات: 0';
+                currentBookingsData = [];
+                return;
+            }
+
+            const bookingsList = Object.keys(data).map(key => ({
+                id: key,
+                ...data[key]
+            }));
+
+            // الترتيب: الأحدث أولاً
+            bookingsList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            currentBookingsData = bookingsList;
+            totalBadge.textContent = `إجمالي الطلبات: ${bookingsList.length}`;
+
+            bookingsList.forEach((item, index) => {
+                let rawPhone = item.phone ? item.phone.replace(/[^0-9]/g, '') : '';
+                let message = `السلام عليكم ورحمة الله وبركاته، أهلاً بحضرتك مع معلمة القرآن من صفحة أجيال / نور الهدى. بخصوص طلب حجز الحصة التجريبية للطالب/ة (${item.name})...`;
+                let whatsappUrl = `https://wa.me/20${rawPhone}?text=${encodeURIComponent(message)}`;
+
+                let day1 = item.day1 || item.day || '-';
+                let hour1 = item.hour1 || item.hour || '-';
+                let day2 = item.day2 || '-';
+                let hour2 = item.hour2 || '-';
+                let notes = item.notes ? item.notes : '<span class="text-muted small">لا يوجد</span>';
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong class="text-dark">${item.name || '-'}</strong></td>
+                    <td>${item.age || '-'} سنة</td>
+                    <td><span class="badge badge-quran rounded-pill px-3">${item.quranLevel || '-'}</span></td>
+                    <td>${item.phone || '-'}</td>
+                    
+                    <!-- الموعد الأول -->
+                    <td class="text-center">
+                        <span class="badge badge-time rounded-pill"><i class="fas fa-calendar-day me-1"></i>${day1}</span>
+                        <br><small class="text-muted fw-bold text-ltr">${hour1}</small>
+                    </td>
+                    
+                    <!-- الموعد الثاني -->
+                    <td class="text-center">
+                        ${day2 !== '-' ? `
+                            <span class="badge badge-time rounded-pill"><i class="fas fa-calendar-day me-1"></i>${day2}</span>
+                            <br><small class="text-muted fw-bold text-ltr">${hour2}</small>
+                        ` : '<span class="text-muted">-</span>'}
+                    </td>
+
+                    <!-- الملاحظات -->
+                    <td><div class="notes-box">${notes}</div></td>
+
+                    <td><small class="text-muted">${item.createdAt || '-'}</small></td>
+                    <td class="text-center text-nowrap">
+                        <a href="${whatsappUrl}" target="_blank" class="btn-whatsapp" title="مراسلة عبر الواتساب">
+                            <i class="fab fa-whatsapp me-1"></i> مراسلة
+                        </a>
+                        <button class="btn btn-sm btn-outline-danger btn-delete ms-1 rounded-circle" data-id="${item.id}" title="حذف الحجز">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // ربط أحداث الحذف
+            document.querySelectorAll('.btn-delete').forEach(button => {
+                button.addEventListener('click', function() {
+                    deleteBooking(this.getAttribute('data-id'));
+                });
+            });
+        });
+
+        // 2. التحكم في الإعدادات
+        onValue(configRef, (snapshot) => {
+            const config = snapshot.val();
+            if (config) {
+                preventSwitch.checked = config.preventConflict || false;
+                maxInput.value = config.maxBookingsPerHour || 1;
+                isRegistrationOpen = config.isRegistrationOpen !== false;
+                
+                updateRegBtnUI();
+            }
+        });
+
+        const updateConfig = () => {
+            update(configRef, {
+                preventConflict: preventSwitch.checked,
+                maxBookingsPerHour: parseInt(maxInput.value) || 1
+            });
+        };
+
+        preventSwitch.addEventListener('change', updateConfig);
+        maxInput.addEventListener('change', updateConfig);
+
+        function updateRegBtnUI() {
+            if (isRegistrationOpen) {
+                toggleRegBtn.className = "btn btn-sm btn-success rounded-pill px-3 ms-auto";
+                toggleRegBtn.innerHTML = '<i class="fas fa-unlock me-1"></i> التسجيل مفتوح';
+            } else {
+                toggleRegBtn.className = "btn btn-sm btn-danger rounded-pill px-3 ms-auto";
+                toggleRegBtn.innerHTML = '<i class="fas fa-lock me-1"></i> التسجيل مغلق';
+            }
+        }
+
+        toggleRegBtn.addEventListener('click', () => {
+            const newState = !isRegistrationOpen;
+            update(configRef, { isRegistrationOpen: newState });
+        });
+
+        // 3. حذف الحجز
+        function deleteBooking(id) {
+            if (confirm("هل أنتِ متأكدة من حذف هذا الحجز نهائياً؟")) {
+                remove(ref(db, `bookings/${id}`))
+                    .then(() => alert("تم حذف الحجز بنجاح."))
+                    .catch((err) => alert("حدث خطأ: " + err.message));
+            }
+        }
+
+        // 4. تصدير البيانات إلى Excel
+        document.getElementById('exportExcelBtn').addEventListener('click', () => {
+            if (currentBookingsData.length === 0) {
+                alert("لا توجد بيانات لتصديرها!");
+                return;
+            }
+
+            const excelData = currentBookingsData.map((item, index) => ({
+                "م": index + 1,
+                "اسم الطالب": item.name || '',
+                "العمر": item.age || '',
+                "الدولة": item.country || '',
+                "القدر المحفوظ": item.quranLevel || '',
+                "رقم الواتساب": item.phone || '',
+                "اليوم الأول": item.day1 || item.day || '',
+                "الساعة الأولى": item.hour1 || item.hour || '',
+                "اليوم الثاني": item.day2 || '',
+                "الساعة الثانية": item.hour2 || '',
+                "ملاحظات إضافية": item.notes || '',
+                "تاريخ الطلب": item.createdAt || ''
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(excelData);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "طلبات الحجز");
+            XLSX.writeFile(workbook, `طلبات_أجيال_نور_الهدى_${new Date().toISOString().slice(0,10)}.xlsx`);
+        });
+    </script>
+</body>
+</html>
