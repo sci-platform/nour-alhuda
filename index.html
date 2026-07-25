@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل طالب جديد - أجيال / نور الهدى</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f7f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .form-card {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border: none;
+            overflow: hidden;
+        }
+        .header-bg {
+            background-color: #1e7e34;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        .promo-banner {
+            background: linear-gradient(135deg, #fff3cd, #ffe69c);
+            border: 2px dashed #ffc107;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+        .price-badge {
+            background-color: #1e7e34;
+            color: #ffffff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 1.15rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .meet-badge {
+            background-color: #ffffff;
+            color: #00796b;
+            border: 1px solid #00796b;
+            border-radius: 20px;
+            padding: 4px 14px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .feature-badge {
+            background-color: #ffffff;
+            color: #1e7e34;
+            border: 1px solid #1e7e34;
+            border-radius: 8px;
+            padding: 4px 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin: 2px;
+        }
+        .free-badge {
+            background-color: #dc3545;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        .btn-custom {
+            background-color: #1e7e34;
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .btn-custom:hover {
+            background-color: #155d27;
+            color: white;
+        }
+        .session-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .is-invalid-time {
+            border-color: #dc3545 !important;
+            background-color: #fff8f8 !important;
+        }
+        .time-feedback {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+        .closed-notice {
+            display: none;
+            background-color: #f8d7da;
+            color: #842029;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #f5c2c7;
+            text-align: center;
+        }
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-7">
+                
+                <!-- رسالة إغلاق التسجيل -->
+                <div id="registrationClosedMessage" class="closed-notice mb-4">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-2"></i>
+                    <h4>عفواً، التسجيل مغلق حالياً</h4>
+                    <p class="mb-0">تم اكتفاء العدد في الوقت الحالي. يرجى المتابعة لاحقاً عند فتح باب الحجز من جديد.</p>
+                </div>
+
+                <div class="card form-card" id="mainFormCard">
+                    
+                    <!-- رأس النموذج -->
+                    <div class="header-bg">
+                        <h3 class="mb-1"><i class="fas fa-quran me-2"></i>أجيال / نور الهدى</h3>
+                        <p class="mb-0 fs-6">منظومة تحفيظ القرآن الكريم وتجويده أونلاين</p>
+                        <span class="badge bg-light text-dark mt-2 px-3 py-2"><i class="fas fa-female me-1"></i> للنساء والأطفال فقط</span>
+                    </div>
+
+                    <div class="card-body p-4">
+
+                        <!-- واجهة النجاح بعد التسجيل -->
+                        <div id="successBox" class="success-box">
+                            <i class="fas fa-check-circle text-success fa-4x mb-3"></i>
+                            <h3 class="text-success fw-bold">تم تسجيل طلبكِ بنجاح! 🎉</h3>
+                            <p class="text-muted fs-6 mt-2">شكراً لثقتكم بنا. تم استلام بيانات الطالب والمواعيد المفضلة، وستتواصل معكم المعلمة لإرسال رابط القاعة عبر <strong>Google Meet</strong>.</p>
+                            
+                            <div class="p-3 bg-light rounded-3 my-4 border text-start">
+                                <div class="d-flex align-items-center mb-2">
+                                    <i class="fas fa-video text-primary me-2 fs-5"></i>
+                                    <span class="fw-bold text-dark">مكان الحصة: Google Meet</span>
+                                </div>
+                                <p class="small text-muted mb-0">سيتم تزويدكم برابط قاعة Google Meet قبل الموعد المحدد للحصة التجريبية مباشرة.</p>
+                            </div>
+
+                            <div class="p-3 bg-light rounded-3 my-4 border">
+                                <p class="mb-1 fw-bold text-dark"><i class="fab fa-whatsapp text-success me-1"></i> لتأكيد الحجز واستلام الرابط فوراً:</p>
+                                <small class="text-muted">يمكنكم مراسلة المعلمة مباشرة عبر الواتساب</small>
+                                <div class="mt-3">
+                                    <a id="directWhatsappBtn" href="#" target="_blank" class="btn btn-success rounded-pill px-4 fw-bold">
+                                        <i class="fab fa-whatsapp me-2"></i> تواصل مع المعلمة عبر الواتساب
+                                    </a>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="location.reload();">تسجيل طالب آخر</button>
+                        </div>
+
+                        <!-- نموذج التسجيل -->
+                        <form id="bookingForm">
+                            
+                            <!-- الإعلان -->
+                            <div class="promo-banner text-center">
+                                <span class="free-badge fw-bold"><i class="fas fa-gift me-1"></i> عرض خاص بـ 150 جنيه فقط للشهر (لفترة محدودة)</span>
+                                
+                                <div class="my-3">
+                                    <span class="price-badge mb-2">
+                                        🗓️ 8 محاضرات شهرياً (محاضرتان أسبوعياً)
+                                    </span>
+                                    <br>
+                                    <span class="meet-badge">
+                                        <i class="fas fa-video me-1 text-danger"></i> الحصص مباشرة عبر <strong>Google Meet</strong>
+                                    </span>
+                                </div>
+
+                                <p class="fw-bold text-dark mb-2"><i class="fas fa-user-check me-1 text-success"></i> الحلقات فردية (لوحدك مع المعلمة)</p>
+                                
+                                <div class="d-flex justify-content-center flex-wrap gap-1 mb-2">
+                                    <span class="feature-badge"><i class="fas fa-check me-1"></i> تصحيح التلاوة والتجويد</span>
+                                    <span class="feature-badge"><i class="fas fa-check me-1"></i> تسميع مباشر</span>
+                                    <span class="feature-badge"><i class="fas fa-check me-1"></i> تثبيت ومراجعة</span>
+                                </div>
+
+                                <hr class="my-2" style="border-top: 1px dashed #cca010;">
+                                <small class="text-muted d-block fw-semibold">🎁 الحصة الأولى (التجريبية) مجاناً بالكامل لتقييم المستوى!</small>
+                            </div>
+
+                            <!-- اسم الطالب -->
+                            <div class="mb-3">
+                                <label for="studentName" class="form-label fw-bold">اسم الطالب ثلاثي <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="studentName" placeholder="أدخل اسم الطالب" required>
+                            </div>
+
+                            <!-- العمر والدولة -->
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="studentAge" class="form-label fw-bold">العمر <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="studentAge" placeholder="مثال: 7" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="studentCountry" class="form-label fw-bold">الدولة <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="studentCountry" required readonly>
+                                        <option value="مصر" selected>مصر 🇪🇬</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- رقم الواتساب -->
+                            <div class="mb-3">
+                                <label for="studentPhone" class="form-label fw-bold">رقم الواتساب للتواصل <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" id="studentPhone" placeholder="مثال: 01012345678" required>
+                            </div>
+
+                            <!-- القدر المحفوظ -->
+                            <div class="mb-3">
+                                <label for="quranLevel" class="form-label fw-bold">القدر المحفوظ من القرآن الكريم <span class="text-danger">*</span></label>
+                                <select class="form-select" id="quranLevel" required>
+                                    <option value="" selected disabled>اختر القدر المحفوظ...</option>
+                                    <option value="مبتدئ (لم يحفظ بعد)">مبتدئ (لم يحفظ بعد / يبدأ من جزء عم)</option>
+                                    <option value="جزء عم">جزء عم</option>
+                                    <option value="جزئين (عم وتبارك)">جزئين (عم وتبارك)</option>
+                                    <option value="من 3 إلى 5 أجزاء">من 3 إلى 5 أجزاء</option>
+                                    <option value="من 5 إلى 10 أجزاء">من 5 إلى 10 أجزاء</option>
+                                    <option value="أكثر من 10 أجزاء">أكثر من 10 أجزاء</option>
+                                    <option value="خاتم لكتاب الله">خاتم لكتاب الله تعالى</option>
+                                </select>
+                            </div>
+
+                            <!-- تحديد الموعد الأول -->
+                            <div class="session-box">
+                                <h6 class="text-success fw-bold mb-3"><i class="fas fa-calendar-alt me-1"></i> الموعد الأول (المحاضرة الأولى أسبوعياً)</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="preferredDay1" class="form-label">اليوم الأول <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="preferredDay1" required>
+                                            <option value="" selected disabled>اختر اليوم...</option>
+                                            <option value="السبت">السبت</option>
+                                            <option value="الأحد">الأحد</option>
+                                            <option value="الإثنين">الإثنين</option>
+                                            <option value="الثلاثاء">الثلاثاء</option>
+                                            <option value="الأربعاء">الأربعاء</option>
+                                            <option value="الخميس">الخميس</option>
+                                            <option value="الجمعة">الجمعة</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="preferredHour1" class="form-label">الساعة المفضلة <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="preferredHour1" required>
+                                            <option value="" selected disabled>اختر الساعة...</option>
+                                            <option value="02:00 مساءً">02:00 مساءً</option>
+                                            <option value="03:00 مساءً">03:00 مساءً</option>
+                                            <option value="04:00 مساءً">04:00 مساءً</option>
+                                            <option value="05:00 مساءً">05:00 مساءً</option>
+                                            <option value="06:00 مساءً">06:00 مساءً</option>
+                                            <option value="07:00 مساءً">07:00 مساءً</option>
+                                            <option value="08:00 مساءً">08:00 مساءً</option>
+                                            <option value="09:00 مساءً">09:00 مساءً</option>
+                                            <option value="10:00 مساءً">10:00 مساءً</option>
+                                        </select>
+                                        <div class="time-feedback" id="timeFeedback1"><i class="fas fa-exclamation-circle me-1"></i>نعتذر، هذا الموعد ممتلئ تماماً.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- تحديد الموعد الثاني -->
+                            <div class="session-box">
+                                <h6 class="text-success fw-bold mb-3"><i class="fas fa-calendar-alt me-1"></i> الموعد الثاني (المحاضرة الثانية أسبوعياً)</h6>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3 mb-md-0">
+                                        <label for="preferredDay2" class="form-label">اليوم الثاني <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="preferredDay2" required>
+                                            <option value="" selected disabled>اختر اليوم...</option>
+                                            <option value="السبت">السبت</option>
+                                            <option value="الأحد">الأحد</option>
+                                            <option value="الإثنين">الإثنين</option>
+                                            <option value="الثلاثاء">الثلاثاء</option>
+                                            <option value="الأربعاء">الأربعاء</option>
+                                            <option value="الخميس">الخميس</option>
+                                            <option value="الجمعة">الجمعة</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="preferredHour2" class="form-label">الساعة المفضلة <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="preferredHour2" required>
+                                            <option value="" selected disabled>اختر الساعة...</option>
+                                            <option value="02:00 مساءً">02:00 مساءً</option>
+                                            <option value="03:00 مساءً">03:00 مساءً</option>
+                                            <option value="04:00 مساءً">04:00 مساءً</option>
+                                            <option value="05:00 مساءً">05:00 مساءً</option>
+                                            <option value="06:00 مساءً">06:00 مساءً</option>
+                                            <option value="07:00 مساءً">07:00 مساءً</option>
+                                            <option value="08:00 مساءً">08:00 مساءً</option>
+                                            <option value="09:00 مساءً">09:00 مساءً</option>
+                                            <option value="10:00 مساءً">10:00 مساءً</option>
+                                        </select>
+                                        <div class="time-feedback" id="timeFeedback2"><i class="fas fa-exclamation-circle me-1"></i>نعتذر، هذا الموعد ممتلئ تماماً.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ملاحظات إضافية (اختياري) -->
+                            <div class="mb-3">
+                                <label for="notes" class="form-label fw-bold">ملاحظات أو طلبات خاصة <small class="text-muted fw-normal">(اختياري)</small></label>
+                                <textarea class="form-control" id="notes" rows="2" placeholder="أي تفاصيل تودين إخبار المعلمة بها..."></textarea>
+                            </div>
+
+                            <!-- زر الإرسال -->
+                            <div class="d-grid gap-2 mt-4">
+                                <button type="submit" class="btn btn-custom btn-lg" id="submitBtn">
+                                    <i class="fas fa-gift me-2"></i> أحجز الحصة التجريبية المجانية الآن
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Scripts -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+        import { getDatabase, ref, push, onValue, get } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AiZaSyC76HLnXGr6AFEcJzNNfYVUrjexNf3irm0",
+            authDomain: "nour-alhuda-85c58.firebaseapp.com",
+            databaseURL: "https://nour-alhuda-85c58-default-rtdb.firebaseio.com",
+            projectId: "nour-alhuda-85c58",
+            storageBucket: "nour-alhuda-85c58.firebasestorage.app",
+            messagingSenderId: "1048432962714",
+            appId: "1:1048432962714:web:19a87b5d9c0e9744a24323",
+            measurementId: "G-JSMBLPMN66"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const form = document.getElementById('bookingForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const mainFormCard = document.getElementById('mainFormCard');
+        const registrationClosedMessage = document.getElementById('registrationClosedMessage');
+        const successBox = document.getElementById('successBox');
+
+        // عناصر الموعد الأول
+        const day1 = document.getElementById('preferredDay1');
+        const hour1 = document.getElementById('preferredHour1');
+        const feedback1 = document.getElementById('timeFeedback1');
+
+        // عناصر الموعد الثاني
+        const day2 = document.getElementById('preferredDay2');
+        const hour2 = document.getElementById('preferredHour2');
+        const feedback2 = document.getElementById('timeFeedback2');
+
+        let isTime1Valid = true;
+        let isTime2Valid = true;
+
+        // 1. التحقق من حالة فتح/إغلاق التسجيل
+        onValue(ref(db, 'config'), (snapshot) => {
+            const config = snapshot.val();
+            if (config && config.isRegistrationOpen === false) {
+                mainFormCard.style.display = 'none';
+                registrationClosedMessage.style.display = 'block';
+            } else {
+                mainFormCard.style.display = 'block';
+                registrationClosedMessage.style.display = 'none';
+            }
+        });
+
+        // 2. دالة فحص التعارض لموعد محدد
+        async function checkSlotConflict(selectedDay, selectedHour, hourInput, feedbackElem) {
+            hourInput.classList.remove('is-invalid-time');
+            feedbackElem.style.display = 'none';
+
+            if (!selectedDay || !selectedHour) return true;
+
+            const configSnapshot = await get(ref(db, 'config'));
+            const config = configSnapshot.val();
+
+            if (!config || !config.preventConflict) return true;
+
+            const maxBookings = config.maxBookingsPerHour || 1;
+            const bookingsSnapshot = await get(ref(db, 'bookings'));
+            const bookings = bookingsSnapshot.val();
+
+            if (!bookings) return true;
+
+            let conflictCount = 0;
+            Object.values(bookings).forEach(booking => {
+                if ((booking.day1 === selectedDay && booking.hour1 === selectedHour) ||
+                    (booking.day2 === selectedDay && booking.hour2 === selectedHour) ||
+                    (booking.day === selectedDay && booking.hour === selectedHour)) {
+                    conflictCount++;
+                }
+            });
+
+            if (conflictCount >= maxBookings) {
+                hourInput.classList.add('is-invalid-time');
+                feedbackElem.style.display = 'block';
+                return false;
+            }
+
+            return true;
+        }
+
+        const validateTime1 = async () => {
+            isTime1Valid = await checkSlotConflict(day1.value, hour1.value, hour1, feedback1);
+            updateSubmitButtonState();
+        };
+
+        const validateTime2 = async () => {
+            isTime2Valid = await checkSlotConflict(day2.value, hour2.value, hour2, feedback2);
+            updateSubmitButtonState();
+        };
+
+        function updateSubmitButtonState() {
+            submitBtn.disabled = !(isTime1Valid && isTime2Valid);
+        }
+
+        day1.addEventListener('change', validateTime1);
+        hour1.addEventListener('change', validateTime1);
+        day2.addEventListener('change', validateTime2);
+        hour2.addEventListener('change', validateTime2);
+
+        // 3. إرسال البيانات
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            await validateTime1();
+            await validateTime2();
+
+            if (!isTime1Valid || !isTime2Valid) return;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> جاري إرسال الطلب...';
+
+            const studentNameVal = document.getElementById('studentName').value;
+
+            const newBooking = {
+                name: studentNameVal,
+                age: document.getElementById('studentAge').value,
+                country: document.getElementById('studentCountry').value,
+                phone: document.getElementById('studentPhone').value,
+                quranLevel: document.getElementById('quranLevel').value,
+                day1: day1.value,
+                hour1: hour1.value,
+                day2: day2.value,
+                hour2: hour2.value,
+                notes: document.getElementById('notes').value || '',
+                createdAt: new Date().toLocaleString('ar-EG')
+            };
+
+            push(ref(db, 'bookings'), newBooking)
+                .then(() => {
+                    // إخفاء النموذج وإظهار واجهة النجاح
+                    form.style.display = 'none';
+                    successBox.style.display = 'block';
+
+                    // تجهيز رابط الواتساب المباشر للمعلمة
+                    const teacherPhone = "201115729140";
+                    const msg = encodeURIComponent(`السلام عليكم ورحمة الله وبركاته، قمت بالحجز للتو للطالب/ة (${studentNameVal}) عبر الموقع، وأود الحصول على رابط قاعة Google Meet للحصة التجريبية.`);
+                    document.getElementById('directWhatsappBtn').href = `https://wa.me/${teacherPhone}?text=${msg}`;
+                })
+                .catch((error) => {
+                    alert('حدث خطأ أثناء الإرسال: ' + error.message);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-gift me-2"></i> أحجز الحصة التجريبية المجانية الآن';
+                });
+        });
+    </script>
+</body>
+</html>
