@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حجز موعد - أكاديمية نور الهدى</title>
+    <title>حجز موعد — أكاديمية نور الهدى</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 6 -->
@@ -13,133 +13,186 @@
     
     <style>
         :root {
-            --primary-color: #0f5132;
-            --header-gradient: linear-gradient(135deg, #115c24, #1e7e34);
-            --bg-color: #f3f6f9;
-            --card-radius: 24px;
+            --primary: #0f5132;
+            --primary-dark: #0a3622;
+            --primary-light: #20c997;
+            --accent: #d4af37;
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            --card-shadow: 0 20px 40px rgba(15, 81, 50, 0.08);
         }
 
         body {
-            background-color: var(--bg-color);
+            background: var(--bg-gradient);
             font-family: 'Cairo', sans-serif;
-            color: #2c3e50;
+            color: #1e293b;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px 10px;
+            padding: 30px 12px;
         }
 
         .booking-card {
             background: #ffffff;
-            border-radius: var(--card-radius);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(0, 0, 0, 0.03);
+            border-radius: 28px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             overflow: hidden;
             width: 100%;
-            max-width: 680px;
-            transition: all 0.3s ease;
+            max-width: 720px;
+            position: relative;
         }
 
         .header-bg {
-            background: var(--header-gradient);
+            background: linear-gradient(135deg, #0f5132 0%, #157347 100%);
             color: #ffffff;
-            padding: 35px 25px;
+            padding: 40px 25px 30px 25px;
             text-align: center;
             position: relative;
         }
 
-        .header-icon-box {
-            width: 75px;
-            height: 75px;
+        .header-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: #ffffff;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .brand-badge {
+            width: 80px;
+            height: 80px;
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 15px auto;
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        .form-section-title {
-            font-weight: 800;
-            font-size: 1rem;
-            color: #1e7e34;
+        .section-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            padding-bottom: 6px;
-            border-bottom: 2px dashed #e2e8f0;
+            gap: 12px;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+
+        .section-icon {
+            width: 36px;
+            height: 36px;
+            background: #e8f5e9;
+            color: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .section-title {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: var(--primary);
+            margin: 0;
         }
 
         .form-label {
             font-weight: 700;
             font-size: 0.88rem;
             color: #475569;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .form-control, .form-select {
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 12px 16px;
             border: 1.5px solid #cbd5e1;
             font-weight: 600;
             font-size: 0.95rem;
             background-color: #f8fafc;
-            transition: all 0.25s ease;
+            transition: all 0.25s ease-in-out;
         }
 
         .form-control:focus, .form-select:focus {
             background-color: #ffffff;
-            border-color: #1e7e34;
-            box-shadow: 0 0 0 4px rgba(30, 126, 52, 0.12);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(15, 81, 50, 0.1);
+        }
+
+        /* باقات الحجز الكروت */
+        .package-card-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            background: #fafafa;
+            height: 100%;
+        }
+
+        .package-card-option:hover {
+            border-color: var(--primary-light);
+            background: #f0fdf4;
+        }
+
+        .package-card-option.active {
+            border-color: var(--primary);
+            background: #f0fdf4;
+            box-shadow: 0 4px 12px rgba(15, 81, 50, 0.08);
+        }
+
+        .package-card-option input[type="radio"] {
+            display: none;
         }
 
         .slot-box {
-            background: #ffffff;
+            background: #f8fafc;
             border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 12px;
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
         .slot-box:hover {
-            border-color: #86efac;
-            background-color: #f0fdf4;
+            border-color: #a7f3d0;
+            background: #f0fdf4;
         }
 
-        .slot-title {
+        .slot-badge {
             font-weight: 800;
-            font-size: 0.82rem;
-            color: #166534;
+            font-size: 0.8rem;
+            color: var(--primary);
             background: #dcfce7;
-            display: inline-block;
-            padding: 2px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
-            margin-bottom: 8px;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
         .btn-submit {
-            background: var(--header-gradient);
-            color: white;
+            background: linear-gradient(135deg, #0f5132 0%, #157347 100%);
+            color: #ffffff;
             font-weight: 800;
-            border-radius: 14px;
-            padding: 14px;
-            font-size: 1.1rem;
+            border-radius: 16px;
+            padding: 16px;
+            font-size: 1.15rem;
             border: none;
-            box-shadow: 0 10px 20px rgba(30, 126, 52, 0.25);
+            box-shadow: 0 12px 25px rgba(15, 81, 50, 0.25);
             transition: all 0.3s ease;
         }
 
         .btn-submit:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 12px 24px rgba(30, 126, 52, 0.35);
-            color: white;
+            box-shadow: 0 15px 30px rgba(15, 81, 50, 0.35);
+            color: #ffffff;
         }
 
         .btn-submit:disabled {
@@ -149,65 +202,81 @@
         }
 
         .status-banner {
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 0.9rem;
+            border-radius: 18px;
+            border: none;
+            background: #fefce8;
+            border: 1px solid #fef08a;
             display: none;
-            border: 1.5px solid #fde047;
-            background-color: #fefce8;
+        }
+
+        /* Toast Alert */
+        .custom-toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            display: none;
         }
     </style>
 </head>
 <body>
 
+    <!-- Toast Notification -->
+    <div id="toastAlert" class="alert custom-toast text-center font-weight-bold" role="alert"></div>
+
     <div class="booking-card">
-        <!-- الهيدر -->
+        <!-- الهيدر الاحترافي -->
         <div class="header-bg">
-            <div class="header-icon-box">
+            <div class="brand-badge">
                 <i class="fas fa-quran fa-2x text-white"></i>
             </div>
-            <h3 class="fw-extrabold mb-1">أكاديمية نور الهدى</h3>
-            <p class="mb-0 text-white-50 fs-6">استمارة تسجيل وحجز المواعيد الدراسية</p>
+            <h3 class="fw-black mb-1">أكاديمية نور الهدى</h3>
+            <p class="mb-0 text-white-50 fs-6 fw-semibold">استمارة التسجيل والحجز الذكي للمواعيد</p>
         </div>
 
-        <div class="card-body p-4 p-md-5">
-            <!-- بنر التنبيه عند إيقاف الحجز مع أزرار التواصل المباشر -->
-            <div id="closedAlert" class="alert alert-warning status-banner mb-4 text-center p-3">
-                <div class="fw-bold mb-2 text-dark" style="font-size: 0.95rem;">
-                    <i class="fas fa-exclamation-triangle text-warning me-1"></i> 
-                    عذراً، استقبال الحجوزات متوقف حالياً.
+        <div class="card-body p-4 p-md-5 pt-3">
+            
+            <!-- تنبيه إيقاف الحجز -->
+            <div id="closedAlert" class="alert status-banner mb-4 text-center p-4">
+                <div class="fw-bold text-dark fs-6 mb-2">
+                    <i class="fas fa-pause-circle text-warning fs-5 me-1"></i> 
+                    عذراً، استقبال الحجوزات الإلكترونية متوقف حالياً.
                 </div>
-                <div class="text-muted small mb-3">يمكنكم التواصل معنا مباشرةً للاستفسار والحجز عبر الواتساب أو الاتصال:</div>
-                
+                <p class="text-muted small mb-3">يمكنكم التواصل مباشرةً مع إدارة الأكاديمية للاستفسار والحجز:</p>
                 <div class="d-flex justify-content-center gap-2 flex-wrap">
-                    <a href="https://wa.me/201126215472" target="_blank" class="btn btn-sm btn-success fw-bold px-3 py-2 rounded-pill shadow-sm d-inline-flex align-items-center gap-1">
-                        <i class="fab fa-whatsapp fs-6"></i> واتساب: 01126215472
+                    <a href="https://wa.me/201126215472" target="_blank" class="btn btn-sm btn-success fw-bold px-3 py-2 rounded-pill shadow-sm">
+                        <i class="fab fa-whatsapp me-1"></i> واتساب: 01126215472
                     </a>
-                    
-                    <a href="tel:01126215472" class="btn btn-sm btn-outline-dark fw-bold px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1">
-                        <i class="fas fa-phone-alt fs-6"></i> اتصل بنا
+                    <a href="tel:01126215472" class="btn btn-sm btn-outline-dark fw-bold px-3 py-2 rounded-pill">
+                        <i class="fas fa-phone-alt me-1"></i> اتصال مباشر
                     </a>
                 </div>
             </div>
 
             <form id="bookingForm">
+                
                 <!-- 1. البيانات الشخصية -->
-                <div class="form-section-title">
-                    <i class="fas fa-user-graduate"></i> البيانات الشخصية للطالب
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-user-graduate"></i></div>
+                    <h5 class="section-title">البيانات الشخصية للطالب</h5>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">اسم الطالب ثلاثي</label>
-                    <input type="text" id="studentName" class="form-control" placeholder="أدخل اسم الطالب بالكامل" required>
+                    <label class="form-label">اسم الطالب بالكامل</label>
+                    <input type="text" id="studentName" class="form-control" placeholder="أدخل اسم الطالب ثلاثي أو رباعي" required>
                 </div>
 
                 <div class="row g-3 mb-3">
-                    <div class="col-6">
-                        <label class="form-label">السن</label>
+                    <div class="col-md-6">
+                        <label class="form-label">العمر (بالسنوات)</label>
                         <input type="number" id="studentAge" class="form-control" placeholder="مثال: 8" min="3" max="80" required>
                     </div>
-                    <div class="col-6">
-                        <label class="form-label">رقم الواتساب</label>
+                    <div class="col-md-6">
+                        <label class="form-label">رقم الواتساب للتواصل</label>
                         <input type="tel" id="studentPhone" class="form-control" placeholder="01xxxxxxxxx" required>
                     </div>
                 </div>
@@ -219,39 +288,76 @@
                         <option value="مبتدئ (جزء عم)">مبتدئ (جزء عم)</option>
                         <option value="متوسط (من 2 إلى 5 أجزاء)">متوسط (من 2 إلى 5 أجزاء)</option>
                         <option value="متقدم (أكثر من 5 أجزاء)">متقدم (أكثر من 5 أجزاء)</option>
-                        <option value="خاتم لكتاب الله">خاتم لكتاب الله</option>
+                        <option value="خاتم لكتاب الله">خاتم لكتاب الله الكريم</option>
                     </select>
                 </div>
 
-                <!-- 2. اختيار الباقة -->
-                <div class="form-section-title">
-                    <i class="fas fa-cubes"></i> اختيار الباقة الدراسية
+                <hr class="my-4 opacity-25">
+
+                <!-- 2. اختيار الباقات كروت تفاعلية -->
+                <div class="section-header">
+                    <div class="section-icon"><i class="fas fa-gem"></i></div>
+                    <h5 class="section-title">اختر الباقة المناسبة</h5>
                 </div>
 
-                <div class="mb-4">
-                    <select id="packageSelect" class="form-select text-success fw-bold" required>
-                        <option value="2" selected>محاضرتان أسبوعياً — (115 جنيه شهرياً)</option>
-                        <option value="3">3 محاضرات أسبوعياً — (180 جنيه شهرياً)</option>
-                        <option value="5">5 محاضرات أسبوعياً — (300 جنيه شهرياً)</option>
-                    </select>
+                <div class="row g-3 mb-4">
+                    <div class="col-4">
+                        <label class="package-card-option w-100 text-center active" id="pkg2Card">
+                            <input type="radio" name="packageRadio" value="2" checked>
+                            <div class="fw-extrabold text-success fs-5">2 حصة</div>
+                            <div class="text-muted small">أسبوعياً</div>
+                            <div class="badge bg-success mt-2">115 ج/شهر</div>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label class="package-card-option w-100 text-center" id="pkg3Card">
+                            <input type="radio" name="packageRadio" value="3">
+                            <div class="fw-extrabold text-primary fs-5">3 حصص</div>
+                            <div class="text-muted small">أسبوعياً</div>
+                            <div class="badge bg-primary mt-2">150 ج/شهر</div>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label class="package-card-option w-100 text-center" id="pkg5Card">
+                            <input type="radio" name="packageRadio" value="5">
+                            <div class="fw-extrabold text-dark fs-5">5 حصص</div>
+                            <div class="text-muted small">أسبوعياً</div>
+                            <div class="badge bg-dark mt-2">250 ج/شهر</div>
+                        </label>
+                    </div>
                 </div>
 
-                <!-- 3. المواعيد -->
-                <div class="form-section-title">
-                    <i class="far fa-clock"></i> تحديد الأيام والمواعيد المناسبة
+                <hr class="my-4 opacity-25">
+
+                <!-- 3. تحديد المواعيد -->
+                <div class="section-header">
+                    <div class="section-icon"><i class="far fa-calendar-alt"></i></div>
+                    <h5 class="section-title">تحديد الأيام والمواعيد المناسبة</h5>
                 </div>
 
                 <div id="slotsContainer" class="mb-4"></div>
 
+                <hr class="my-4 opacity-25">
+
+                <!-- 4. ملاحظات إضافية -->
+                <div class="section-header">
+                    <div class="section-icon"><i class="far fa-sticky-note"></i></div>
+                    <h5 class="section-title">ملاحظات إضافية (اختياري)</h5>
+                </div>
+
+                <div class="mb-4">
+                    <textarea id="studentNotes" class="form-control" rows="2" placeholder="أي تفاصيل أو رغبات خاصة تود مشاركتها معنا..."></textarea>
+                </div>
+
                 <!-- زر الإرسال -->
-                <button type="submit" id="submitBtn" class="btn btn-submit w-100 mt-2">
-                    <i class="fas fa-check-circle me-1"></i> تأكيد الحجز وإرسال الطلب
+                <button type="submit" id="submitBtn" class="btn btn-submit w-100">
+                    <i class="fas fa-paper-plane me-2"></i> تأكيد الحجز وإرسال الطلب
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Firebase SDK Modules -->
+    <!-- Firebase Modules -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
         import { getDatabase, ref, get, push, set, onValue } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-database.js";
@@ -269,20 +375,29 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        const ADMIN_WHATSAPP = "201126215472";
         const DAYS_LIST = ["السبت", "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة"];
         const HOURS_LIST = ["02:00 م", "03:00 م", "04:00 م", "05:00 م", "06:00 م", "07:00 م", "08:00 م", "09:00 م", "10:00 م", "11:00 م"];
-        
         const MAX_CAPACITY_PER_SLOT = 1;
 
-        const packageSelect = document.getElementById('packageSelect');
         const slotsContainer = document.getElementById('slotsContainer');
         const bookingForm = document.getElementById('bookingForm');
         const submitBtn = document.getElementById('submitBtn');
         const closedAlert = document.getElementById('closedAlert');
+        const toastAlert = document.getElementById('toastAlert');
 
         let isSystemOpen = true;
+        let selectedPackageValue = 2;
 
-        // 1️⃣ قراءة حالة فتح/إغلاق الحجز من لوحة التحكم
+        // إظهار تنبيه توست احترافي
+        function showToast(msg, type = 'danger') {
+            toastAlert.className = `alert alert-${type} custom-toast`;
+            toastAlert.innerText = msg;
+            toastAlert.style.display = 'block';
+            setTimeout(() => { toastAlert.style.display = 'none'; }, 4000);
+        }
+
+        // قراءة حالة فتح الحجز
         onValue(ref(db, 'settings/isBookingOpen'), (snapshot) => {
             const status = snapshot.val();
             isSystemOpen = status !== null ? status : true;
@@ -294,11 +409,21 @@
             } else {
                 closedAlert.style.display = 'none';
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fas fa-check-circle me-1"></i> تأكيد الحجز وإرسال الطلب`;
+                submitBtn.innerHTML = `<i class="fas fa-paper-plane me-2"></i> تأكيد الحجز وإرسال الطلب`;
             }
         });
 
-        // 2️⃣ توليد حقول الأيام والمواعيد
+        // إدارة اختيار الباقات بالكروت
+        document.querySelectorAll('input[name="packageRadio"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                document.querySelectorAll('.package-card-option').forEach(c => c.classList.remove('active'));
+                e.target.closest('.package-card-option').classList.add('active');
+                selectedPackageValue = parseInt(e.target.value);
+                generateSlotFields(selectedPackageValue);
+            });
+        });
+
+        // توليد المواعيد
         function generateSlotFields(count) {
             slotsContainer.innerHTML = '';
             for (let i = 1; i <= count; i++) {
@@ -311,13 +436,13 @@
                 const slotBox = document.createElement('div');
                 slotBox.className = 'slot-box';
                 slotBox.innerHTML = `
-                    <div class="slot-title"><i class="fas fa-graduation-cap me-1"></i> المحاضرة رقم (${i})</div>
+                    <div class="slot-badge"><i class="fas fa-book-reader me-1"></i> الحصة رقم (${i})</div>
                     <div class="row g-2">
                         <div class="col-6">
-                            <select class="form-select day-input" id="day${i}" required>${dayOptions}</select>
+                            <select class="form-select" id="day${i}" required>${dayOptions}</select>
                         </div>
                         <div class="col-6">
-                            <select class="form-select hour-input" id="hour${i}" required>${hourOptions}</select>
+                            <select class="form-select" id="hour${i}" required>${hourOptions}</select>
                         </div>
                     </div>
                 `;
@@ -325,10 +450,9 @@
             }
         }
 
-        generateSlotFields(parseInt(packageSelect.value));
-        packageSelect.addEventListener('change', (e) => generateSlotFields(parseInt(e.target.value)));
+        generateSlotFields(2);
 
-        // 3️⃣ الفحص الدقيق لتوفر المواعيد
+        // التثبت من السعة المتاحة
         async function checkSlotAvailability(selectedSlots) {
             const snapshot = await get(ref(db, 'bookings'));
             if (!snapshot.exists()) return { available: true };
@@ -336,11 +460,10 @@
             const existingBookings = snapshot.val();
             const slotCounts = {};
 
-            Object.values(existingBookings).forEach(booking => {
+            Object.values(existingBookings).forEach(b => {
                 for (let i = 1; i <= 5; i++) {
-                    const bDay = booking[`day${i}`] || (i === 1 ? booking.day : '');
-                    const bHour = booking[`hour${i}`] || (i === 1 ? booking.hour : '');
-
+                    const bDay = b[`day${i}`] || (i === 1 ? b.day : '');
+                    const bHour = b[`hour${i}`] || (i === 1 ? b.hour : '');
                     if (bDay && bHour) {
                         const key = `${bDay.toString().trim()}_${bHour.toString().trim()}`;
                         slotCounts[key] = (slotCounts[key] || 0) + 1;
@@ -350,57 +473,44 @@
 
             for (let slot of selectedSlots) {
                 const reqKey = `${slot.day.trim()}_${slot.hour.trim()}`;
-                const currentCount = slotCounts[reqKey] || 0;
-
-                if (currentCount >= MAX_CAPACITY_PER_SLOT) {
-                    return { 
-                        available: false, 
-                        conflictSlot: `${slot.day} الساعة ${slot.hour}` 
-                    };
+                if ((slotCounts[reqKey] || 0) >= MAX_CAPACITY_PER_SLOT) {
+                    return { available: false, conflictSlot: `${slot.day} (الساعة ${slot.hour})` };
                 }
             }
-
             return { available: true };
         }
 
-        // 4️⃣ إرسال النموذج
+        // إرسال الطلب
         bookingForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             if (!isSystemOpen) {
-                alert("عذراً، الحجز متوقف حالياً ولا يمكن إرسال الطلب.");
+                showToast("عذراً، الحجز متوقف حالياً.");
                 return;
             }
 
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-1"></i> جاري التحقق من المواعيد...`;
+            submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i> جاري التحقق...`;
 
-            const name = document.getElementById('studentName').value.trim();
-            const age = document.getElementById('studentAge').value.trim();
-            const phone = document.getElementById('studentPhone').value.trim();
-            const quranLevel = document.getElementById('quranLevel').value;
-            const pkgValue = packageSelect.value;
-            
-            let packageName = "محاضرتان أسبوعياً";
-            if (pkgValue === "3") packageName = "3 محاضرات أسبوعياً";
-            if (pkgValue === "5") packageName = "5 محاضرات أسبوعياً";
-
-            const count = parseInt(pkgValue);
             const selectedSlots = [];
+            let pkgText = "محاضرتان أسبوعياً (115 ج)";
+            if (selectedPackageValue === 3) pkgText = "3 محاضرات أسبوعياً (150 ج)";
+            if (selectedPackageValue === 5) pkgText = "5 محاضرات أسبوعياً (250 ج)";
+
             const bookingData = {
-                name: name,
-                age: age,
-                phone: phone,
-                quranLevel: quranLevel,
-                package: packageName,
+                name: document.getElementById('studentName').value.trim(),
+                age: document.getElementById('studentAge').value.trim(),
+                phone: document.getElementById('studentPhone').value.trim(),
+                quranLevel: document.getElementById('quranLevel').value,
+                package: pkgText,
+                notes: document.getElementById('studentNotes').value.trim(),
                 status: 'pending',
                 createdAt: new Date().toISOString()
             };
 
-            for (let i = 1; i <= count; i++) {
+            for (let i = 1; i <= selectedPackageValue; i++) {
                 const dayVal = document.getElementById(`day${i}`).value;
                 const hourVal = document.getElementById(`hour${i}`).value;
-                
                 bookingData[`day${i}`] = dayVal;
                 bookingData[`hour${i}`] = hourVal;
                 selectedSlots.push({ day: dayVal, hour: hourVal });
@@ -410,26 +520,40 @@
                 const availability = await checkSlotAvailability(selectedSlots);
 
                 if (!availability.available) {
-                    alert(`⚠️ عذراً! الموعد التالي ممتلئ بالفعل:\n(${availability.conflictSlot})\n\nيرجى اختيار موعد آخر.`);
+                    showToast(`⚠️ الموعد التالي ممتلئ بالفعل: ${availability.conflictSlot}`);
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i class="fas fa-check-circle me-1"></i> تأكيد الحجز وإرسال الطلب`;
+                    submitBtn.innerHTML = `<i class="fas fa-paper-plane me-2"></i> تأكيد الحجز وإرسال الطلب`;
                     return;
                 }
 
-                const newBookingRef = push(ref(db, 'bookings'));
-                await set(newBookingRef, bookingData);
+                await set(push(ref(db, 'bookings')), bookingData);
 
-                alert("🎉 تم تسجيل حجزك بنجاح!\nسنقوم بالتواصل معك قريباً عبر الواتساب لتأكيد الحساب والبدء.");
+                // إرسال عبر الواتساب تلقائياً
+                let slotsMsg = "";
+                selectedSlots.forEach((s, idx) => slotsMsg += `  ▫️ الحصة ${idx+1}: ${s.day} (${s.hour})\n`);
+                
+                const waText = `🌸 *طلب حجز جديد — أكاديمية نور الهدى* 🌸\n\n` +
+                    `👤 *اسم الطالب:* ${bookingData.name}\n` +
+                    `🎂 *العمر:* ${bookingData.age} سنة\n` +
+                    `📱 *الواتساب:* ${bookingData.phone}\n` +
+                    `📖 *المستوى:* ${bookingData.quranLevel}\n` +
+                    `📦 *الباقة:* ${bookingData.package}\n\n` +
+                    `🗓️ *المواعيد:*\n${slotsMsg}\n` +
+                    `📝 *ملاحظات:* ${bookingData.notes || 'لا يوجد'}`;
+
+                window.open(`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(waText)}`, '_blank');
+
+                showToast("🎉 تم إرسال حجزك بنجاح!", "success");
                 bookingForm.reset();
                 generateSlotFields(2);
 
-            } catch (error) {
-                console.error("Error saving booking:", error);
-                alert("حدث خطأ أثناء إرسال البيانات، يرجى إعادة المحاولة.");
+            } catch (err) {
+                console.error(err);
+                showToast("حدث خطأ أثناء الإرسال، برجاء المحاولة مجدداً.");
             } finally {
                 if (isSystemOpen) {
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = `<i class="fas fa-check-circle me-1"></i> تأكيد الحجز وإرسال الطلب`;
+                    submitBtn.innerHTML = `<i class="fas fa-paper-plane me-2"></i> تأكيد الحجز وإرسال الطلب`;
                 }
             }
         });
